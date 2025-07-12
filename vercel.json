@@ -3,6 +3,19 @@
     {
       "src": "/(.*)",
       "dest": "hackersclub/wsgi.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
     }
   ]
+  "builds": [
+    {
+      "src": "hackersclub/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "hackersclub.settings",
+  }
 }
