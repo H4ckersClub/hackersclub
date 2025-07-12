@@ -1,0 +1,52 @@
+{% extends 'courses/layout.html' %}
+{% block title %}Login | HackersClub{% endblock %}
+{% block extra_css %}
+<style>
+    .auth-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    }
+    .auth-card {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        padding: 2.5rem 2rem;
+        width: 100%;
+        max-width: 400px;
+    }
+    .auth-card .form-label {
+        font-weight: 500;
+    }
+    .auth-card .btn-primary {
+        width: 100%;
+    }
+    .auth-card .form-text {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h2 class="mb-4 text-center"><i class="bi bi-person-circle me-2"></i>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="identifier" class="form-label">Email or Username</label>
+                <input type="text" class="form-control" id="identifier" name="identifier" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <div class="form-text mt-3">
+            Don't have an account? <a href="{% url 'register' %}">Register</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

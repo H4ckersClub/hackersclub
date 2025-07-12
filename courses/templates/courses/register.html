@@ -1,0 +1,60 @@
+{% extends 'courses/layout.html' %}
+{% block title %}Register | HackersClub{% endblock %}
+{% block extra_css %}
+<style>
+    .auth-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+    }
+    .auth-card {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        padding: 2.5rem 2rem;
+        width: 100%;
+        max-width: 400px;
+    }
+    .auth-card .form-label {
+        font-weight: 500;
+    }
+    .auth-card .btn-primary {
+        width: 100%;
+    }
+    .auth-card .form-text {
+        text-align: center;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <h2 class="mb-3 text-center"><i class="bi bi-person-plus-fill me-2"></i>Register</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-2">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-2">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-2">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-2">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <div class="form-text mt-3">
+            Already have an account? <a href="{% url 'login' %}">Login</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

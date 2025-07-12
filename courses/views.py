@@ -96,3 +96,54 @@ def course_detail(request, course_id):
         }
     
     return render(request, 'courses/course_detail.html', context)
+
+def login_view(request):
+    from django.contrib.auth import authenticate, login
+    if request.method == 'POST':
+        identifier = request.POST.get('identifier')
+        password = request.POST.get('password')
+        user = None
+        from django.contrib.auth.models import User
+        # Try to find user by username
+        try:
+            user_obj = User.objects.get(username=identifier)
+            user = authenticate(request, username=user_obj.username, password=password)
+        except User.DoesNotExist:
+            # Try to find user by email
+            try:
+                user_obj = User.objects.get(email=identifier)
+                user = authenticate(request, username=user_obj.username, password=password)
+            except User.DoesNotExist:
+                user = None
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'Logged in successfully!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Invalid credentials. Please try again.')
+    return render(request, 'courses/login.html')
+
+def register_view(request):
+    from django.contrib.auth.models import User
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists.')
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already registered.')
+        elif password != confirm_password:
+            messages.error(request, 'passwords do not match')
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            messages.success(request, 'Registration successful! You can now log in.')
+            return redirect('login')
+    return render(request, 'courses/register.html')
+
+def logout_view(request):
+    from django.contrib.auth import logout
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect('home')
