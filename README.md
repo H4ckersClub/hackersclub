@@ -16,7 +16,7 @@ Our Django application, `example` is configured as an installed application in `
 # api/settings.py
 INSTALLED_APPS = [
     # ...
-    'example',
+    
 ]
 ```
 
