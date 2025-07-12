@@ -1,0 +1,82 @@
+{% extends 'courses/layout.html' %}
+{% block title %}All Courses | HackersClub{% endblock %}
+{% block extra_css %}
+<style>
+    .courses-section {
+        padding: 60px 0;
+        background: #f8f9fa;
+    }
+    .course-card {
+        border-radius: 0.5rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        margin-bottom: 2rem;
+        background: #fff;
+    }
+    .course-card .card-img-top {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        height: 180px;
+        object-fit: cover;
+    }
+    .course-card .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    .course-card .btn {
+        width: 100%;
+    }
+    .course-search {
+        background: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="courses-section">
+    <div class="container">
+        <h2 class="mb-5 text-center"><i class="bi bi-book-fill me-2 text-primary"></i>All Courses</h2>
+        <form method="get" class="course-search mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-10 mb-2 mb-md-0">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" name="q" placeholder="Search for courses..." value="{{ request.GET.q }}" />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i>Search</button>
+                </div>
+            </div>
+        </form>
+        {% if courses %}
+        <div class="row">
+            {% for course in courses %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    {% if course.image_url %}
+                    <img src="{{ course.image_url }}" class="card-img-top" alt="{{ course.title }}">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                        <i class="bi bi-book text-muted" style="font-size: 3rem;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text text-muted flex-grow-1">{{ course.short_description|default:course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-primary mt-3">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">
+            No courses found.
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

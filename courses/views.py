@@ -151,3 +151,34 @@ def logout_view(request):
 @login_required
 def profile_view(request):
     return render(request, 'courses/profile.html', {'user': request.user})
+
+
+@login_required
+def profile_view(request):
+    return render(request, 'courses/profile.html', {'user': request.user})
+
+
+def courses_list_view(request):
+    q = request.GET.get('q', '').strip()
+    try:
+        courses_qs = Course.objects.all()
+        if q:
+            courses_qs = courses_qs.filter(title__icontains=q) | courses_qs.filter(short_description__icontains=q) | courses_qs.filter(description__icontains=q)
+        if courses_qs.exists():
+            courses = [
+                {
+                    'id': course.id,
+                    'title': course.title,
+                    'short_description': course.short_description,
+                    'description': course.description,
+                    'price': course.price,
+                    'image_url': course.image_url or 'https://via.placeholder.com/400x200?text=Course+Image',
+                }
+                for course in courses_qs
+            ]
+        else:
+            courses = []
+    except Exception:
+        courses = []
+    return render(request, 'courses/course_list.html', {'courses': courses})
+
