@@ -147,3 +147,7 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
     return redirect('home')
+
+@login_required
+def profile_view(request):
+    return render(request, 'courses/profile.html', {'user': request.user})
