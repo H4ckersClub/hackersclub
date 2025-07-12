@@ -1,4 +1,22 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "hackersclub/wsgi.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "runtime": "python3.x"
+      }
+    },
+    {
+      "src": "build_files.sh",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "staticfiles"
+      }
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
@@ -8,14 +26,5 @@
       "src": "/static/(.*)",
       "dest": "/static/$1"
     }
-  ],
-  "builds": [
-    {
-      "src": "hackersclub/wsgi.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "env": {
-    "DJANGO_SETTINGS_MODULE": "hackersclub.settings"
-  }
+  ]
 }

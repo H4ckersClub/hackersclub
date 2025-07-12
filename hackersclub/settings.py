@@ -13,8 +13,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
 import os
+import dj_database_url
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
+
+DEBUG = os.environ.get("DEBUG") != "False"
 
 if not SECRET_KEY:
     # Handle the case where the environment variable is not set (e.g., raise an error)
@@ -37,6 +40,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',  # For serving static files in development
     'courses',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # For serving static files in production
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,10 +88,11 @@ WSGI_APPLICATION = 'hackersclub.wsgi.app'
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        os.environ.get("DATABASE_URL"),
+        conn_max_age=600,  # Keep the connection open for 10 minutes
+        conn_health_checks=True  # Enable health checks for the connection
+    )
 }
 
 
@@ -125,7 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles", "static")
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
