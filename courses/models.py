@@ -25,3 +25,27 @@ class Course(models.Model):
     def __str__(self):
         return self.title
 
+class Coupon(models.Model):
+    code = models.CharField(max_length=20, unique=True)
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
+    valid_from = models.DateTimeField()
+    valid_until = models.DateTimeField()
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.code
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course_reference = models.IntegerField(null=True, blank=True)  # Optional field for course reference number
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, null=True, blank=True)
+    price_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    order_date = models.DateTimeField(auto_now_add=True)
+    payment_id = models.CharField(max_length=100, unique=True, blank=True)  # Unique identifier for the payment transaction
+    payment_status = models.CharField(max_length=30, default='pending')
+
+    def __str__(self):
+        if self.course:
+            return f"{self.user.username} - {self.course.title}"
+        return f"{self.user.username} - Course ID: ({self.course_reference})"

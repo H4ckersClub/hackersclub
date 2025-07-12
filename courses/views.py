@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Course
+from .models import Course, Order, Coupon
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
