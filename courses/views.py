@@ -157,6 +157,21 @@ def profile_view(request):
 def profile_view(request):
     return render(request, 'courses/profile.html', {'user': request.user})
 
+@login_required
+def my_courses_view(request):
+    # Get all paid orders for the current user
+    orders = Order.objects.filter(user=request.user, payment_status='paid').select_related('course')
+    courses = []
+    for order in orders:
+        course = order.course
+        courses.append({
+            'id': course.id,
+            'title': getattr(course, 'title', ''),
+            'short_description': getattr(course, 'short_description', ''),
+            'description': getattr(course, 'description', ''),
+            'image_url': getattr(course, 'image_url', 'https://via.placeholder.com/400x200?text=Course+Image'),
+        })
+    return render(request, 'courses/my_courses.html', {'courses': courses})
 
 def courses_list_view(request):
     q = request.GET.get('q', '').strip()

@@ -1,0 +1,62 @@
+{% extends 'courses/layout.html' %}
+{% block title %}My Courses | HackersClub{% endblock %}
+{% block extra_css %}
+<style>
+    .my-courses-section {
+        padding: 60px 0;
+        background: #f8f9fa;
+    }
+    .course-card {
+        border-radius: 0.5rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+        margin-bottom: 2rem;
+        background: #fff;
+    }
+    .course-card .card-img-top {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        height: 180px;
+        object-fit: cover;
+    }
+    .course-card .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+    .course-card .btn {
+        width: 100%;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="my-courses-section">
+    <div class="container">
+        <h2 class="mb-5 text-center"><i class="bi bi-journal-bookmark-fill me-2 text-primary"></i>My Courses</h2>
+        {% if courses %}
+        <div class="row">
+            {% for course in courses %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card course-card h-100">
+                    {% if course.image_url %}
+                    <img src="{{ course.image_url }}" class="card-img-top" alt="{{ course.title }}">
+                    {% else %}
+                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
+                        <i class="bi bi-book text-muted" style="font-size: 3rem;"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text text-muted flex-grow-1">{{ course.short_description|default:course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-primary mt-3">Go to Course</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">
+            You have not enrolled in any courses yet.
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
