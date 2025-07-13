@@ -1,0 +1,49 @@
+{% extends "course_manager/layout.html" %}
+{% block content %}
+<h2>Modules for Course: {{ course.title }}</h2>
+<a href="{% url 'course_manager:module_create' course.id %}" class="btn btn-success mb-3">Add Module</a>
+<a href="{% url 'course_manager:course_detail' course.id %}" class="btn btn-secondary mb-3">Back to Course Detail</a>
+
+{% if modules %}
+    <ul class="list-group mb-4">
+        {% for module in modules %}
+        <li class="list-group-item">
+            <strong>{{ module.title }}</strong>
+            <div>
+                <a href="{% url 'course_manager:module_edit' module.id %}" class="btn btn-sm btn-primary">Edit</a>
+                <a href="{% url 'course_manager:module_delete' module.id %}" class="btn btn-sm btn-danger">Delete</a>
+                <a href="{% url 'course_manager:submodule_create' module.id %}" class="btn btn-sm btn-success">Add SubModule</a>
+            </div>
+            <div>
+                <small>Video: <a href="{{ module.video_url }}" target="_blank">{{ module.video_url }}</a></small><br>
+                <small>Notes: {{ module.notes|truncatewords:20 }}</small><br>
+                <small>Source Code: <a href="{{ module.source_code_url }}" target="_blank">{{ module.source_code_url }}</a></small><br>
+                <small>Additional Resources: {{ module.additional_resources|default:"-" }}</small>
+            </div>
+            {% with submodules=module.submodules.all %}
+                {% if submodules %}
+                    <ul class="mt-2">
+                        {% for sub in submodules %}
+                        <li>
+                            <strong>{{ sub.title }}</strong>
+                            <a href="{% url 'course_manager:submodule_edit' sub.id %}" class="btn btn-sm btn-primary">Edit</a>
+                            <a href="{% url 'course_manager:submodule_delete' sub.id %}" class="btn btn-sm btn-danger">Delete</a>
+                            <br>
+                            <small>Video: <a href="{{ sub.video_url }}" target="_blank">{{ sub.video_url }}</a></small><br>
+                            <small>Notes: {{ sub.notes|truncatewords:15 }}</small><br>
+                            <small>Source Code: <a href="{{ sub.source_code_url }}" target="_blank">{{ sub.source_code_url }}</a></small><br>
+                            <small>Additional Resources: {{ sub.additional_resources|default:"-" }}</small>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No modules added yet.</p>
+{% endif %}
+
+<a href="{% url 'course_manager:course_list' %}" class="btn btn-secondary">Back to Courses</a>
+{% endblock %}

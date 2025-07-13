@@ -1,0 +1,52 @@
+{% extends "course_manager/layout.html" %}
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-3">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'course_manager:course_list' %}">Courses</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Modules</li>
+  </ol>
+</nav>
+<div class="row">
+    <div class="col-md-9">
+        <h2>Modules</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Course</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for module in modules %}
+                <tr>
+                    <td>{{ module.id }}</td>
+                    <td>{{ module.title }}</td>
+                    <td>{{ module.course.title }}</td>
+                    <td>
+                        <a href="{% url 'course_manager:module_edit' module.id %}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="{% url 'course_manager:module_delete' module.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3">
+        <h4>Filter by Course</h4>
+        <form method="get">
+            <div class="mb-3">
+                <select name="course" class="form-control" onchange="this.form.submit()">
+                    <option value="">All Courses</option>
+                    {% for course in courses %}
+                        <option value="{{ course.id }}" {% if course.id|stringformat:"s" == selected_course_id %}selected{% endif %}>
+                            {{ course.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

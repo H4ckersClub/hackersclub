@@ -1,0 +1,10 @@
+{% extends "course_manager/layout.html" %}
+{% block content %}
+  <h2>Delete SubModule</h2>
+  <p>Are you sure you want to delete the submodule "<strong>{{ submodule.title }}</strong>"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'course_manager:course_modules' submodule.module.course.id %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
