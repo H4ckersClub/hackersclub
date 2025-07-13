@@ -87,6 +87,8 @@ WSGI_APPLICATION = 'hackersclub.wsgi.app'
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
+os.environ.setdefault("DATABASE_URL", "sqlite:///db.sqlite3")  # Default to SQLite if not set
+
 DATABASES = {
     'default': dj_database_url.parse(
         os.environ.get("DATABASE_URL"),
