@@ -5,5 +5,7 @@ app_name = 'course_manager'
 
 urlpatterns = [
     # Add your CRUD paths here
-    path('', vews.course_list, name='course_list')
+    path('', views.course_list_view, name='course_list'),
+    path('courses/', views.course_list_view, name='course_list'),
+    path('courses/add', views.course_create_view, name='course_create')
 ]

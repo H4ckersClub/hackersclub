@@ -1,0 +1,56 @@
+{% extends "course_manager/layout.html" %}
+{% block content %}
+<h2>Courses</h2>
+<a href="{% url 'course_manager:course_create' %}" class="btn btn-success mb-3">Add Course</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Title</th>
+            <th colspan="2">Manage Modules</th>
+            <th colspan="3">Manage Course</th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+            <th>View</th>
+            <th>Create</th>
+            <th>Detail</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+        <tr>
+            <!-- course id -->
+            <td>{{ course.id }}</td>
+            <td>{{ course.title }}</td>
+            <!-- View Modules -->
+            <td>
+                {% if course.modules.count > 0 %}
+                <a href="{% url 'course_manager:course_modules' course.id %}">View Modules ({{ course.modules.count }})</a>
+                {% else %}
+                No modules available
+                {% endif %}
+            </td>
+            <!-- Create Modules -->
+            <td>
+                <a href="{% url 'course_manager:module_create' course.id %}" class="btn btn-secondary btn-sm">Add Module</a>
+                <!-- Course Detail -->
+                <td>
+                    <a href="{% url 'course_manager:course_detail' course.id %}">Course Detail({{ course.id }})</a>
+                </td>
+                <!-- course edit -->
+                <td>
+                    <a href="{% url 'course_manager:course_edit' course.id %}" class="btn btn-primary btn-sm">Edit Course</a>
+                </td>
+                <!-- course delete -->
+                <td>
+                <a href="{% url 'course_manager:course_delete' course.id %}" class="btn btn-danger btn-sm">Delete Course</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
