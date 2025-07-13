@@ -42,6 +42,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # For serving static files in development
     'courses',
+    'course_manager',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -87,11 +88,11 @@ WSGI_APPLICATION = 'hackersclub.wsgi.app'
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
-os.environ.setdefault("DATABASE_URL", "sqlite:///db.sqlite3")  # Default to SQLite if not set
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///db.sqlite3")  # Default to SQLite if not set
 
 DATABASES = {
     'default': dj_database_url.parse(
-        os.environ.get("DATABASE_URL"),
+        DATABASE_URL,
         conn_max_age=600,  # Keep the connection open for 10 minutes
         conn_health_checks=True  # Enable health checks for the connection
     )
