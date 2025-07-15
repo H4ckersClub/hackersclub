@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('courses.urls')),  # Redirect root URL to courses app
     path('manage/', include('course_manager.urls')),  # Include course manager URLs
+    path('study/', include('player.urls')),  # Include player app URLs
 ]

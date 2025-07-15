@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # For serving static files in development
     'courses',
     'course_manager',
+    'player',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
