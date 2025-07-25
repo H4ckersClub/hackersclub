@@ -5,5 +5,7 @@ app_name = 'player'
 
 urlpatterns = [
     path('', views.player_view, name='player'),
+    path('<int:course_id>/', views.player_view, name='player_course'),
+    path('<int:course_id>/<int:module_id>/', views.player_view, name='player_module'),
     path('<int:course_id>/<int:module_id>/<int:submodule_id>/', views.player_view, name='player_view'),
 ]
